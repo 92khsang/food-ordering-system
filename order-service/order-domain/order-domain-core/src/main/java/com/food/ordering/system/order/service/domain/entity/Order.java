@@ -35,8 +35,48 @@ public class Order extends AggregateRoot<OrderId> {
         validateItemsPrice();
     }
 
+    public void pay() {
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new OrderDomainException("Order is not in correct state for pay operation!");
+        }
+        orderStatus = OrderStatus.PAID;
+    }
+
+    public void approve() {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not in correct state for approve operation!");
+        }
+        orderStatus = OrderStatus.APPROVED;
+    }
+
+    public void initCancel(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.PAID) {
+            throw new OrderDomainException("Order is not in correct state for initCancel operation!");
+        }
+        orderStatus = OrderStatus.CANCELLING;
+        updateFailureMessages(failureMessages);
+    }
+
+    public void cancel(List<String> failureMessages) {
+        if (orderStatus != OrderStatus.CANCELLING && orderStatus != OrderStatus.PENDING) {
+            throw new OrderDomainException("Order is not in correct state for cancel operation!");
+        }
+        orderStatus = OrderStatus.CANCELLED;
+        updateFailureMessages(failureMessages);
+    }
+
+    private void updateFailureMessages(List<String> failureMessages) {
+        if (Objects.nonNull(this.failureMessages) && Objects.nonNull(failureMessages)) {
+            this.failureMessages.addAll(failureMessages.stream().filter(String::isBlank).toList());
+        }
+
+        if (Objects.isNull(this.failureMessages)) {
+            this.failureMessages = failureMessages;
+        }
+    }
+
     private void validateInitialOrder() {
-        if (Objects.isNull(this.orderStatus) || Objects.isNull(this.getId())) {
+        if (Objects.nonNull(this.orderStatus) || Objects.nonNull(this.getId())) {
             throw new OrderDomainException("Order is not in correct status for initialization!");
         }
     }
