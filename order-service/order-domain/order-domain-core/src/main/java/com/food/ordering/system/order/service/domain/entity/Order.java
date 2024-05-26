@@ -18,13 +18,15 @@ public class Order extends AggregateRoot<OrderId> {
     private final Money price;
     private final List<OrderItem> items;
 
-    private TrackingId tackingId;
+    private TrackingId trackingId;
     private OrderStatus orderStatus;
     private List<String> failureMessages;
 
+    public static final String FAILURE_MESSAGE_DELIMITER = ",";
+
     public void initializeOrder() {
         setId(new OrderId(UUID.randomUUID()));
-        this.tackingId = new TrackingId(UUID.randomUUID());
+        this.trackingId = new TrackingId(UUID.randomUUID());
         this.orderStatus = OrderStatus.PENDING;
         initializeOrderItems();
     }
@@ -120,7 +122,7 @@ public class Order extends AggregateRoot<OrderId> {
         deliveryAddress = builder.deliveryAddress;
         price = builder.price;
         items = builder.items;
-        tackingId = builder.tackingId;
+        trackingId = builder.trackingId;
         orderStatus = builder.orderStatus;
         failureMessages = builder.failureMessages;
     }
@@ -149,8 +151,8 @@ public class Order extends AggregateRoot<OrderId> {
         return items;
     }
 
-    public TrackingId getTackingId() {
-        return tackingId;
+    public TrackingId getTrackingId() {
+        return trackingId;
     }
 
     public OrderStatus getOrderStatus() {
@@ -168,7 +170,7 @@ public class Order extends AggregateRoot<OrderId> {
         private StreetAddress deliveryAddress;
         private Money price;
         private List<OrderItem> items;
-        private TrackingId tackingId;
+        private TrackingId trackingId;
         private OrderStatus orderStatus;
         private List<String> failureMessages;
 
@@ -205,8 +207,8 @@ public class Order extends AggregateRoot<OrderId> {
             return this;
         }
 
-        public Builder tackingId(TrackingId val) {
-            tackingId = val;
+        public Builder trackingId(TrackingId val) {
+            trackingId = val;
             return this;
         }
 
