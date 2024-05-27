@@ -6,27 +6,29 @@ logging:
     com.food.ordering.system: DEBUG
 
 order-service:
-  payment_request-topic_name: payment-request
-  payment-response-topic_name: payment-request
-  restaurant-approval-request-topic_name: restaurant-approval-request
-  restaurant-approval-response-topic_name: restaurant-approval-response
+  payment-request-topic-name: payment-request
+  payment-response-topic-name: payment-response
+  restaurant-approval-request-topic-name: restaurant-approval-request
+  restaurant-approval-response-topic-name: restaurant-approval-response
 
 spring:
   jpa:
     open-in-view: false
     show-sql: true
-    database-platform: org.hibernate.dialect.MariaDBDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MariaDBDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:mariadb://localhost:3306/udemy_msa?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
+    url: jdbc:postgresql://localhost:15432/udemy_fos?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
     username: udemy
     password: udemy123!#
-    driver-class-name: org.mariadb.jdbc.Driver
-    platform: mariadb
-    schema: classpath:init-schema.sql
-    initialization-mode: always
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+      schema-locations: classpath:init-schema.sql
+      mode: always
 
 kafka-config:
   bootstrap-servers: localhost:19092, localhost:29092, localhost:39092
@@ -64,4 +66,3 @@ kafka-consumer-config:
   poll-timeout-ms: 150
   payment-consumer-group-id: payment-topic-consumer
   restaurant-approval-consumer-group-id: restaurant-approval-topic-consumer
-  customer-group-id: customer-topic-consumer

@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-udemy-fos
+    environment:
+      POSTGRES_DB: udemy_fos
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root123!#
+    volumes:
+      - ./volumes/postgresql/data:/var/lib/postgresql/data
+      - ./init-postgres-user.sh:/docker-entrypoint-initdb.d/init-postgres-user.sh
+    ports:
+      - "15432:5432"
