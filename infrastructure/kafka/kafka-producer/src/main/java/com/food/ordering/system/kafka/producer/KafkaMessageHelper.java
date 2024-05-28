@@ -1,4 +1,4 @@
-package com.food.ordering.system.order.service.messaging.publisher.kafka;
+package com.food.ordering.system.kafka.producer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -9,13 +9,13 @@ import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
-public class OrderKafkaMessageHelper {
+public class KafkaMessageHelper {
 
     public <T> CompletableFuture<SendResult<String, T>> getKafkaCallback(
-            String responseTopicName,
-            T requestAvroModel,
+            String topicName,
+            T avroModel,
             String orderId,
-            String requestAvroModelName
+            String avroModelName
     ) {
         return new CompletableFuture<>() {
 
@@ -35,8 +35,8 @@ public class OrderKafkaMessageHelper {
 
             @Override
             public boolean completeExceptionally(Throwable ex) {
-                log.error("Error while sending " + requestAvroModelName +
-                        " message {} to topic {}", requestAvroModel.toString(), responseTopicName, ex);
+                log.error("Error while sending " + avroModelName +
+                        " message {} to topic {}", avroModel.toString(), topicName, ex);
                 return super.completeExceptionally(ex);
             }
         };

@@ -318,6 +318,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+.idea/codeStyles/**
 infrastructure/docker-compose/volumes/**/**
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,java,gradle,maven,intellij+all,intellij,intellij+iml
