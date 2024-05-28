@@ -1,6 +1,6 @@
 package com.food.ordering.system.order.service.domain;
 
-import com.food.ordering.system.domain.DomainConstants;
+import com.food.ordering.system.domain.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.order.service.domain.entity.Order;
 import com.food.ordering.system.order.service.domain.entity.Product;
 import com.food.ordering.system.order.service.domain.entity.Restaurant;
@@ -20,20 +20,28 @@ import static com.food.ordering.system.domain.DomainConstants.ZONE_ID;
 public class OrderDomainServiceImpl implements OrderDomainService {
 
     @Override
-    public OrderCreatedEvent validateAndInitializeOrder(Order order, Restaurant restaurant) {
+    public OrderCreatedEvent validateAndInitializeOrder(
+            Order order,
+            Restaurant restaurant,
+            DomainEventPublisher<OrderCreatedEvent> orderCreatedEventPublisher
+    ) {
+
         validateRestaurant(restaurant);
         setOrderProductInformation(order, restaurant);
         order.validateOrder();
         order.initializeOrder();
         log.info("Order with id: {} is initialized", order.getId().getValue());
-        return new OrderCreatedEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)));
+        return new OrderCreatedEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)), orderCreatedEventPublisher);
     }
 
     @Override
-    public OrderPaidEvent payOrder(Order order) {
+    public OrderPaidEvent payOrder(
+            Order order,
+            DomainEventPublisher<OrderPaidEvent> orderPaidEventPublisher
+    ) {
         order.pay();
         log.info("Order with id: {} is payed", order.getId().getValue());
-        return new OrderPaidEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)));
+        return new OrderPaidEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)), orderPaidEventPublisher);
     }
 
     @Override
@@ -44,10 +52,14 @@ public class OrderDomainServiceImpl implements OrderDomainService {
     }
 
     @Override
-    public OrderCancelledEvent cancelOrderPayment(Order order, List<String> failedMessages) {
+    public OrderCancelledEvent cancelOrderPayment(
+            Order order,
+            List<String> failedMessages,
+            DomainEventPublisher<OrderCancelledEvent> orderCancelledEventPublisher
+    ) {
         order.initCancel(failedMessages);
         log.info("Order payment is cancelling for order id: {}", order.getId().getValue());
-        return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)));
+        return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)), orderCancelledEventPublisher);
     }
 
     @Override
