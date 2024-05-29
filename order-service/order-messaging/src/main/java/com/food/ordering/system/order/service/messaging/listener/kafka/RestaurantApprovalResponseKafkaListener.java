@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static com.food.ordering.system.domain.DomainConstants.FAILURE_MESSAGE_DELIMITER;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -52,7 +54,7 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
             } else if (OrderApprovalStatus.REJECTED == restaurantApprovalResponseAvroModel.getOrderApprovalStatus()) {
                 log.info("Processing rejected order for order id: {}, with failure messages: {}",
                         restaurantApprovalResponseAvroModel.getOrderId(),
-                        String.join(",", restaurantApprovalResponseAvroModel.getFailureMessages())
+                        String.join(FAILURE_MESSAGE_DELIMITER, restaurantApprovalResponseAvroModel.getFailureMessages())
                 );
 
                 restaurantApprovalResponseMessageListener.orderRejected(

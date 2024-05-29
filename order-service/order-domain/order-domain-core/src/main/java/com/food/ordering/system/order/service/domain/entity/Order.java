@@ -22,8 +22,6 @@ public class Order extends AggregateRoot<OrderId> {
     private OrderStatus orderStatus;
     private List<String> failureMessages;
 
-    public static final String FAILURE_MESSAGE_DELIMITER = ",";
-
     public void initializeOrder() {
         setId(new OrderId(UUID.randomUUID()));
         this.trackingId = new TrackingId(UUID.randomUUID());
