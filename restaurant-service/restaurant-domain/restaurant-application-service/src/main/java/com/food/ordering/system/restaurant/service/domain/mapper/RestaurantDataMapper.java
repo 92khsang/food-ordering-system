@@ -26,7 +26,7 @@ public class RestaurantDataMapper {
                                         .productId(product.getId())
                                         .quantity(product.getQuantity())
                                         .build())
-                                .toList())
+                                .collect(Collectors.toList()))
                         .totalAmount(new Money(restaurantApprovalRequest.getPrice()))
                         .orderStatus(OrderStatus.valueOf(restaurantApprovalRequest.getRestaurantOrderStatus().name()))
                         .build())

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.food.ordering.system.domain.DomainConstants.FAILURE_MESSAGE_DELIMITER;
 
@@ -66,7 +67,7 @@ public class OrderDataAccessMapper {
                         .quantity(orderItemEntity.getQuantity())
                         .subTotal(new Money(orderItemEntity.getSubTotal()))
                         .build())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private StreetAddress addressEntityToDeliveryAddress(OrderAddressEntity address) {
@@ -88,7 +89,7 @@ public class OrderDataAccessMapper {
                         .subTotal(orderItem.getSubTotal().getAmount())
                         .build()
                 )
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private OrderAddressEntity deliveryAddressToAddressEntity(StreetAddress deliveryAddress) {

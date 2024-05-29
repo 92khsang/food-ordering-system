@@ -12,6 +12,7 @@ import com.food.ordering.system.restaurant.service.domain.event.OrderRejectedEve
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class RestaurantMessagingDataMapper {
@@ -64,7 +65,7 @@ public class RestaurantMessagingDataMapper {
                                         .productId(new ProductId(UUID.fromString(avroModel.getId())))
                                         .quantity(avroModel.getQuantity())
                                         .build())
-                        .toList())
+                        .collect(Collectors.toList()))
                 .price(restaurantApprovalRequestAvroModel.getPrice())
                 .createdAt(restaurantApprovalRequestAvroModel.getCreatedAt())
                 .build();

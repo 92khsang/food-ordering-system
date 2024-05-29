@@ -67,7 +67,10 @@ public class Order extends AggregateRoot<OrderId> {
 
     private void updateFailureMessages(List<String> failureMessages) {
         if (Objects.nonNull(this.failureMessages) && Objects.nonNull(failureMessages)) {
-            this.failureMessages.addAll(failureMessages.stream().filter(String::isBlank).toList());
+            this.failureMessages.addAll(failureMessages.stream()
+                    .filter(failureMessage -> !failureMessage.isBlank())
+                    .toList()
+            );
         }
 
         if (Objects.isNull(this.failureMessages)) {
