@@ -35,6 +35,7 @@
                     <image>
                         <name>${project.groupId}/customer.service:${project.version}</name>
                     </image>
+                    <createdDate>${maven.build.timestamp}</createdDate>
                 </configuration>
                 <executions>
                     <execution>

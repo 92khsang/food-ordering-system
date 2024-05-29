@@ -43,6 +43,7 @@
                     <image>
                         <name>${project.groupId}/payment.service:${project.version}</name>
                     </image>
+                    <createdDate>${maven.build.timestamp}</createdDate>
                 </configuration>
                 <executions>
                     <execution>
