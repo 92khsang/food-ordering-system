@@ -24,10 +24,10 @@ public class RestaurantDomainServiceImpl implements RestaurantDomainService {
             DomainEventPublisher<OrderRejectedEvent> orderRejectedEventPublisher
     ) {
         restaurant.validateOrder(failureMessages);
-        log.info("Validating order with id: {}", restaurant.getOrderDetail().getId().getValue());
+        log.info("Validating order with orderId: {}", restaurant.getOrderDetail().getId().getValue());
 
         if (failureMessages.isEmpty()) {
-            log.info("Order is approved with id: {}", restaurant.getOrderDetail().getId().getValue());
+            log.info("Order is approved with orderId: {}", restaurant.getOrderDetail().getId().getValue());
             restaurant.constructOrderApproval(OrderApprovalStatus.APPROVED);
             return new OrderApprovedEvent(
                     restaurant.getOrderApproval(),
@@ -37,7 +37,7 @@ public class RestaurantDomainServiceImpl implements RestaurantDomainService {
                     orderApprovedEventPublisher
             );
         } else {
-            log.info("Order is rejected with id: {}", restaurant.getOrderDetail().getId().getValue());
+            log.info("Order is rejected with orderId: {}", restaurant.getOrderDetail().getId().getValue());
             restaurant.constructOrderApproval(OrderApprovalStatus.REJECTED);
             return new OrderRejectedEvent(
                     restaurant.getOrderApproval(),

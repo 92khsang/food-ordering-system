@@ -24,7 +24,7 @@ public class Restaurant extends BaseEntity<RestaurantId> {
         Money totalAmount = orderDetail.getProducts().stream()
                 .map(product -> {
                     if (!product.isAvailable()) {
-                        failureMessages.add("Product with id: " + product.getId().getValue()
+                        failureMessages.add("Product with orderId: " + product.getId().getValue()
                                 + " is not available");
                     }
                     return product.getPrice().multiply(product.getQuantity());
@@ -78,7 +78,7 @@ public class Restaurant extends BaseEntity<RestaurantId> {
         private Builder() {
         }
 
-        public Builder id(RestaurantId val) {
+        public Builder restaurantId(RestaurantId val) {
             restaurantId = val;
             return this;
         }
