@@ -39,6 +39,6 @@ public class CreditHistoryRepositoryImpl implements CreditHistoryRepository {
                 .map(creditHistoryList ->
                         creditHistoryList.stream()
                                 .map(creditHistoryDataAccessMapper::creditHistoryEntityToCreditHistory)
-                                .collect(Collectors.toList()));
+                                .toList());
     }
 }
