@@ -22,8 +22,7 @@ public class OrderDomainServiceImpl implements OrderDomainService {
     @Override
     public OrderCreatedEvent validateAndInitializeOrder(
             Order order,
-            Restaurant restaurant,
-            DomainEventPublisher<OrderCreatedEvent> orderCreatedEventPublisher
+            Restaurant restaurant
     ) {
 
         validateRestaurant(restaurant);
@@ -31,17 +30,16 @@ public class OrderDomainServiceImpl implements OrderDomainService {
         order.validateOrder();
         order.initializeOrder();
         log.info("Order with id: {} is initialized", order.getId().getValue());
-        return new OrderCreatedEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)), orderCreatedEventPublisher);
+        return new OrderCreatedEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)));
     }
 
     @Override
     public OrderPaidEvent payOrder(
-            Order order,
-            DomainEventPublisher<OrderPaidEvent> orderPaidEventPublisher
+            Order order
     ) {
         order.pay();
         log.info("Order with id: {} is payed", order.getId().getValue());
-        return new OrderPaidEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)), orderPaidEventPublisher);
+        return new OrderPaidEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)));
     }
 
     @Override
@@ -54,12 +52,11 @@ public class OrderDomainServiceImpl implements OrderDomainService {
     @Override
     public OrderCancelledEvent cancelOrderPayment(
             Order order,
-            List<String> failedMessages,
-            DomainEventPublisher<OrderCancelledEvent> orderCancelledEventPublisher
+            List<String> failedMessages
     ) {
         order.initCancel(failedMessages);
         log.info("Order payment is cancelling for order id: {}", order.getId().getValue());
-        return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)), orderCancelledEventPublisher);
+        return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(ZONE_ID)));
     }
 
     @Override
